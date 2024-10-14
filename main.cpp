@@ -176,7 +176,7 @@ bool isPrime(int n){
 
 vint primeFactors(int n){
   // prime factorization
-  // Returns unique prime factors 
+  // Returns only the distinct prime factors of n, without repetition | TC: O(sqrt(n) + log(n))
   vint prf;
   if(n%2==0){
     prf.eb(2);
@@ -192,7 +192,35 @@ vint primeFactors(int n){
   return prf;
 }
 
-// #define PRIME_SIEVE // Sieve of Eratosthenes | TC: O(nlog(logn)) ~ O(n)
+// #define PRIME_FACTORIZATION // TC: O(nlog(n))
+#ifdef PRIME_FACTORIZATION 
+const int MAX=1e5;
+vint spf(MAX+1);
+void spfSeive(){
+  // TC: O(nlog(log(n))) ~ O(n)
+  f(i, 1, MAX+1) spf[i]=i; // initializing the sieve
+  // marking each number with its smallest prime factor
+  for(ll i=2; i*i<=MAX; i++){ 
+    if(spf[i]!=i) continue;
+    for(ll j=i*i; j<=MAX; j+=i){
+      if(spf[j]==j) spf[j]=i;
+    }
+  }
+}
+
+vint primeFactorization(int n){
+  // Returns all prime factors of n, including repeated factors | TC: log(n)
+  vint result;
+  while(n>1){
+    // cerr << n << ' ' << spf[n] << endl; // For better understanding
+    result.eb(spf[n]); // store the smallest prime factor of n
+    n/=spf[n];
+  }
+  return result;
+}
+#endif
+
+// #define PRIME_SIEVE // Sieve of Eratosthenes | TC: O(nlog(log(n))) ~ O(n)
 #ifdef PRIME_SIEVE 
 const int MAX = 1e4;  
 vint is_prime(MAX+1, 1);
